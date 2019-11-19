@@ -5,12 +5,13 @@
 
 # STAR --runThreadN 4 --runMode genomeGenerate --genomeDir <outdir> --genomeFastaFiles <genomefile> --genomeSAindexNbases 9
 
-
+#echo "Installing STAR..."
+#conda install -y star
 
 echo "Running STAR index..."
-mkdir -p res/genome/star_index
+mkdir res/contaminants_idx
 STAR --runThreadN 4 --runMode genomeGenerate \
---genomeDir res/genome/star_index/ \
---genomeFastaFiles res/genome/ecoli.fasta \
+--genomeDir res/contaminants_idx \
+--genomeFastaFiles res/contaminants.fasta \
 --genomeSAindexNbases 9
 

@@ -1,23 +1,34 @@
+
 #Download all the files specified in data/urls
-for url in $(cat data/urls) #TODO
-do
-    bash scripts/download.sh $url data
-done
+#for url in $(cat data/urls) #TODO
+#do
+#    bash scripts/download.sh $url data
+#done
 
 # Download the contaminants fasta file, and uncompress it
-bash scripts/download.sh https://bioinformatics.cnio.es/data/courses/decont/contaminants.fasta.gz res yes #TODO
+#bash scripts/download.sh https://bioinformatics.cnio.es/data/courses/decont/contaminants.fasta.gz res yes #TODO
 
 # Index the contaminants file
-bash scripts/index.sh res/contaminants.fasta res/contaminants_idx
+#echo "Running index..."
+#bash scripts/index.sh res/contaminants.fasta res/contaminants_idx
 
 # Merge the samples into a single file
-#for sid in $(<list_of_sample_ids) #TODO. EXtraemos el id de las muestas.. como el otro ej 
+#echo "Running merged files..."
+#for sid in $(ls data/*.fastq.gz | cut -d "-" -f1 | sed "s:data/::" | sort | uniq) #TODO
 #do
-#    bash scripts/merge_fastqs.sh data out/merged $sid
+#	bash scripts/merge_fastqs.sh data out/merged $sid
 #done
 
 # TODO: run cutadapt for all merged files--> for 
-# cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed -o <trimmed_file> <input_file> > <log_file>
+echo "Running cutadapt..."
+mkdir -p log/cutadapt
+mkdir -p out/trimmed
+for sid in $(ls out/merged/*.fastq.gz | cut -d "." -f1 | sed "s:out/merged/::" | sort | uniq)
+do
+cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed  \
+-o out/trimmed/$sid.trimmed.fastq.gz out/merged/$sid.merged.fastq.gz > log/cutadapt/$sid.log
+done
+
 
 #TODO: run STAR for all trimmed files
 #for fname in out/trimmed/*.fastq.gz

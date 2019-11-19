@@ -2,11 +2,14 @@
 # into a single file, which should be stored in the output directory specified by the second argument.
 # The directory containing the samples is indicated by the first argument.
 
-sid = $3
-dir = $1
-merged = $2
+#$1 --> dirinput
+#$2 --> diroutput
+#$3 --> sid
 
-for samples in $1
-do
-	cat 
+dir=$1
+output=$2
+sid=$3
 
+mkdir -p out/merged
+
+cat $1/$3*.fastq.gz > $2/$3.merged.fastq.gz
